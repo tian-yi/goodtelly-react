@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -43,7 +44,11 @@ const PopularList = ({ url, title }) => {
       <Grid container spacing={2}>
         {popularItems.map((item) => (
           <Grid item xs={12} md={4} lg={3} key={item.id}>
-            <Card className={classes.card}>
+            <Card
+              className={classes.card}
+              component={Link}
+              to={`/movie/${item.id}`}
+            >
               <CardMedia
                 className={classes.cardMedia}
                 image={`${TMDB_IMAGE_URL}/w300/${item.backdrop_path}`}
