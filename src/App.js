@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core/styles";
@@ -6,15 +6,11 @@ import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Container from "@material-ui/core/Container";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Box from "@material-ui/core/Box";
 
 import { ReactComponent as Logo } from "./static/images/goodtelly-logo.svg";
-import { DEFAULT_QUERY, TMDB_API_URL, TMDB_IMAGE_URL } from "./config";
+import { POPULAR_MOVIES_URL, POPULAR_TV_SHOWS_URL } from "./config";
+import PopularList from "./PopularList";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -33,29 +29,16 @@ const useStyles = makeStyles((theme) => ({
   nav: {
     display: "flex",
   },
-  card: {
-    height: "100%;",
-  },
-  media: {
-    paddingTop: "56.25%", // 16:9
-  },
+  container: { marginTop: theme.spacing(2) },
 }));
 
 function App() {
   const classes = useStyles();
-  const [popularMovies, setPopularMovies] = useState([]);
-  useEffect(() => {
-    fetch(`${TMDB_API_URL}/movie/popular${DEFAULT_QUERY}`)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        setPopularMovies(result.results);
-      });
-  }, []);
+
   return (
     <div>
       <CssBaseline />
-      <AppBar position="static" className={classes.appBar}>
+      <AppBar position="static" className={classes.appBar} component={Paper}>
         <Toolbar className={classes.toolbar}>
           <div className={classes.logo}>
             <Logo />
@@ -69,30 +52,11 @@ function App() {
             </Typography>
           </nav>
         </Toolbar>
-        <Container maxWidth="lg">
-          <Box component={Paper} p={2}>
-            <Box mb={2}>
-              <Typography variant="h5">Popular Movies</Typography>
-            </Box>
-            <Grid container spacing={2}>
-              {popularMovies.map((movie) => (
-                <Grid item xs={12} md={4} lg={3} key={movie.id}>
-                  <Card className={classes.card}>
-                    <CardMedia
-                      className={classes.media}
-                      image={`${TMDB_IMAGE_URL}/w300/${movie.backdrop_path}`}
-                      title={movie.title}
-                    />
-                    <CardContent>
-                      <Typography variant="body">{movie.title}</Typography>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </Container>
       </AppBar>
+      <Container maxWidth="lg" className={classes.container}>
+        <PopularList url={POPULAR_MOVIES_URL} title="Popular Movies" />
+        <PopularList url={POPULAR_TV_SHOWS_URL} title="Popular TV Shows" />
+      </Container>
     </div>
   );
 }
