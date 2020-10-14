@@ -1,10 +1,12 @@
 import React from "react";
 
+import { NavLink } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
 
 import { ReactComponent as Logo } from "./static/images/goodtelly-logo.svg";
 
@@ -22,8 +24,12 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   navTitle: {
-    color: theme.palette.text.secondary,
+    ...theme.typography.body,
     marginRight: theme.spacing(2),
+  },
+  activeNavTitle: {
+    ...theme.typography.h6,
+    color: theme.palette.primary.main,
   },
 }));
 
@@ -33,15 +39,29 @@ const TopNav = () => {
     <AppBar position="static" className={classes.appBar} component={Paper}>
       <Toolbar className={classes.toolbar}>
         <div className={classes.logo}>
-          <Logo />
+          <NavLink to="/">
+            <Logo />
+          </NavLink>
         </div>
         <nav className={classes.nav}>
-          <Typography variant="h6" className={classes.navTitle}>
-            Movies
-          </Typography>
-          <Typography variant="h6" className={classes.navTitle}>
-            TV Shows
-          </Typography>
+          <Container>
+            <Button
+              component={NavLink}
+              to="/movie"
+              className={classes.navTitle}
+              activeClassName={classes.activeNavTitle}
+            >
+              Movies
+            </Button>
+            <Button
+              component={NavLink}
+              to="/tv"
+              className={classes.navTitle}
+              activeClassName={classes.activeNavTitle}
+            >
+              TV Shows
+            </Button>
+          </Container>
         </nav>
       </Toolbar>
     </AppBar>

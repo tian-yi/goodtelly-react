@@ -6,6 +6,8 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TopNav from "./TopNav";
 import Home from "./Home";
 import MovieDetails from "./MovieDetails";
+import Movie from "./Movie";
+import TV from "./TV";
 
 function App() {
   return (
@@ -18,6 +20,12 @@ function App() {
         </Route>
         <Route path="/movie/:id">
           <MovieDetails />
+        </Route>
+        <Route path="/movie">
+          <Movie />
+        </Route>
+        <Route path="/tv">
+          <TV />
         </Route>
       </Switch>
     </div>
