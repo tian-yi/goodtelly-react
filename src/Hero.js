@@ -1,13 +1,12 @@
 import React from "react";
 
 import PropTypes from "prop-types";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   hero: (props) => ({
-    height: 400,
+    height: 320,
+    borderRadius: 4,
     padding: theme.spacing(4),
     display: "flex",
     flexDirection: "column",
@@ -18,24 +17,13 @@ const useStyles = makeStyles((theme) => ({
   }),
 }));
 
-const Hero = ({ image }) => {
+const Hero = ({ image, children }) => {
   const classes = useStyles({ image });
-  return (
-    <div className={classes.hero}>
-      <Box mb={2}>
-        <Typography variant="h1" style={{ color: "white" }}>
-          Welcome
-        </Typography>
-      </Box>
-      <Typography variant="h4" style={{ color: "white" }}>
-        Share your favourte your Movie and TV Shows with your family and
-        friends.
-      </Typography>
-    </div>
-  );
+  return <div className={classes.hero}>{children}</div>;
 };
 
-Hero.porpTypes = {
+Hero.propTypes = {
   image: PropTypes.string.isRequired,
+  children: PropTypes.node,
 };
 export default Hero;

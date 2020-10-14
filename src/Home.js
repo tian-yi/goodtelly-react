@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 
 import { fetchData } from "./api";
 import {
@@ -38,7 +39,17 @@ const Home = () => {
 
   return (
     <Container maxWidth="lg">
-      <Hero image={heroImage} />
+      <Hero image={heroImage}>
+        <Box mb={2}>
+          <Typography variant="h2" style={{ color: "white" }}>
+            Welcome
+          </Typography>
+        </Box>
+        <Typography variant="h5" style={{ color: "white" }}>
+          Share your favourte your Movie and TV Shows with your family and
+          friends.
+        </Typography>
+      </Hero>
       <Box mt={2}>
         <PopularList items={popularMovies} title="Popular Movies" />
         <PopularList items={popularTVShows} title="Popular TV Shows" />
