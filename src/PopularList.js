@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
@@ -23,17 +22,8 @@ const useStyles = makeStyles({
   },
 });
 
-const PopularList = ({ url, title }) => {
+const PopularList = ({ title, items }) => {
   const classes = useStyles();
-  const [popularItems, setPopularItems] = useState([]);
-  useEffect(() => {
-    fetch(url)
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        setPopularItems(result.results.slice(0, 8));
-      });
-  }, [url]);
 
   return (
     <Box component={Paper} p={2} marginBottom={2}>
@@ -42,7 +32,7 @@ const PopularList = ({ url, title }) => {
       </Box>
 
       <Grid container spacing={2}>
-        {popularItems.map((item) => (
+        {items.map((item) => (
           <Grid item xs={12} md={4} lg={3} key={item.id}>
             <Card
               className={classes.card}
@@ -71,8 +61,8 @@ const PopularList = ({ url, title }) => {
 };
 
 PopularList.propTypes = {
-  url: PropTypes.string.isRequired,
   title: PropTypes.string,
+  items: PropTypes.array.isRequired,
 };
 
 export default PopularList;

@@ -1,17 +1,47 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 
+import { fetchData } from "./api";
+import {
+  TMDB_IMAGE_URL,
+  POPULAR_MOVIES_URL,
+  POPULAR_TV_SHOWS_URL,
+} from "./config";
 import PopularList from "./PopularList";
-import { POPULAR_MOVIES_URL, POPULAR_TV_SHOWS_URL } from "./config";
+import Hero from "./Hero";
 
 const Home = () => {
+  const [heroImage, setHeroImage] = useState("");
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [popularTVShows, setPopularTVShows] = useState([]);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      const result = await fetchData(POPULAR_MOVIES_URL);
+      const movies = result.results;
+      setPopularMovies(movies.slice(0, 8));
+      const randomTopMovieImage =
+        movies[parseInt(Math.random() * Math.floor(10), 10)].backdrop_path;
+
+      setHeroImage(`${TMDB_IMAGE_URL}/w1280${randomTopMovieImage}`);
+    };
+    const fetchTVShows = async () => {
+      const TVShows = await fetchData(POPULAR_TV_SHOWS_URL);
+      setPopularTVShows(TVShows.results.slice(0, 8));
+    };
+
+    fetchMovies();
+    fetchTVShows();
+  }, []);
+
   return (
     <Container maxWidth="lg">
+      <Hero image={heroImage} />
       <Box mt={2}>
-        <PopularList url={POPULAR_MOVIES_URL} title="Popular Movies" />
-        <PopularList url={POPULAR_TV_SHOWS_URL} title="Popular TV Shows" />
+        <PopularList items={popularMovies} title="Popular Movies" />
+        <PopularList items={popularTVShows} title="Popular TV Shows" />
       </Box>
     </Container>
   );
