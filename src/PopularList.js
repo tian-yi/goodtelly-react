@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -36,7 +37,11 @@ function PopularList({ items, listTitle }) {
           const title = item.title ? item.title : item.name;
           return (
             <Grid item xs={12} md={4} lg={3} key={item.id}>
-              <Card className={classes.card}>
+              <Card
+                className={classes.card}
+                component={Link}
+                to={item.title ? `/movie/${item.id}` : `/tv/${item.id}`}
+              >
                 <CardMedia
                   className={classes.cardMedia}
                   image={`${IMAGE_URL}${item.backdrop_path}`}

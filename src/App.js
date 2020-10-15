@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { Switch, Route, Link } from "react-router-dom";
+
 import { CssBaseline } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -10,6 +12,8 @@ import Box from "@material-ui/core/Box";
 
 import { ReactComponent as Logo } from "./static/images/goodtelly-logo.svg";
 import PopularList from "./PopularList";
+import MovieDetails from "./MovieDetails";
+import TVDetails from "./TVDetails";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -34,6 +38,7 @@ function App() {
   const classes = useStyles();
   const [popularMovies, setPopularMovies] = useState([]);
   const [popularTVShows, setPopularTVShows] = useState([]);
+
   useEffect(() => {
     // fetch movies
     const popular_movie_url =
@@ -62,23 +67,52 @@ function App() {
       <AppBar position="static" className={classes.appBar}>
         <Toolbar className={classes.toolBar}>
           <div className={classes.logo}>
-            <Logo />
+            <Link to="/">
+              <Logo />
+            </Link>
           </div>
           <Typography variant="h6" className={classes.navTitle}>
-            Movies
+            <Link to="/movie">Movies</Link>
           </Typography>
           <Typography variant="h6" className={classes.navTitle}>
-            TV Shows
+            <Link to="/tv">TV Shows</Link>
           </Typography>
         </Toolbar>
       </AppBar>
       <Container maxWidth="lg" className={classes.main}>
-        <Box mb={2}>
-          <PopularList items={popularMovies} listTitle="Popular Movies" />
-        </Box>
-        <Box mb={2}>
-          <PopularList items={popularTVShows} listTitle="Popular TV Shows" />
-        </Box>
+        <Switch>
+          <Route exact path="/">
+            <Box mb={2}>
+              <PopularList items={popularMovies} listTitle="Popular Movies" />
+            </Box>
+
+            <Box mb={2}>
+              <PopularList
+                items={popularTVShows}
+                listTitle="Popular TV Shows"
+              />
+            </Box>
+          </Route>
+          <Route path="/movie/:id">
+            <MovieDetails />
+          </Route>
+          <Route path="/movie">
+            <Box mb={2}>
+              <PopularList items={popularMovies} listTitle="Popular Movies" />
+            </Box>
+          </Route>
+          <Route path="/tv/:id">
+            <TVDetails />
+          </Route>
+          <Route path="/tv">
+            <Box mb={2}>
+              <PopularList
+                items={popularTVShows}
+                listTitle="Popular TV Shows"
+              />
+            </Box>
+          </Route>
+        </Switch>
       </Container>
     </div>
   );
