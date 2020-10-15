@@ -8,6 +8,10 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 
 import { ReactComponent as Logo } from "./static/images/goodtelly-logo.svg";
 
@@ -25,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     margin: `0px ${theme.spacing(2)}px`,
   },
+  card: {
+    heigth: "100%",
+  },
+  cardMedia: {
+    paddingTop: "56.25%", // 16:9
+  },
+  sectionTitle: { padding: theme.spacing(2) },
 }));
 
 const IMAGE_URL = "https://image.tmdb.org/t/p/w780/";
@@ -59,27 +70,33 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <div>
-        {popularMovies.map((movie) => (
-          <div key={movie.id}>
-            <Card>
-              <CardMedia
-                style={{ height: 500 }}
-                image={`${IMAGE_URL}${movie.poster_path}`}
-                title={movie.title}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {movie.title}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {movie.overview}
-                </Typography>
-              </CardContent>
-            </Card>
-          </div>
-        ))}
-      </div>
+      <Box mt={2} pt={2}>
+        <Container maxWidth="lg" component={Paper}>
+          <Typography variant="h5" className={classes.sectionTitle}>
+            Popular Movies
+          </Typography>
+
+          <Grid container spacing={2}>
+            {popularMovies.map((movie) => (
+              <Grid item xs={12} md={4} lg={3} key={movie.id}>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    style={{ height: 500 }}
+                    image={`${IMAGE_URL}${movie.poster_path}`}
+                    title={movie.title}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {movie.title}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
     </div>
   );
 }
