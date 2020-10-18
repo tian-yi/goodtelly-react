@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import placeholder from "./static/images/image-placeholder.png";
@@ -12,6 +13,8 @@ import { TMDB_API_URL, DEFAULT_QUERY, TMDB_IMAGE_URL } from "./config";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PlaylistPlayIcon from "@material-ui/icons/PlaylistPlay";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+import Paper from "@material-ui/core/Paper";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   hero: (props) => ({
@@ -46,6 +49,12 @@ const useStyles = makeStyles((theme) => ({
   actionIcon: {
     marginRight: theme.spacing(2),
   },
+  castCard: {
+    maxWidth: "185px",
+  },
+  castCardMedia: {
+    height: 277,
+  },
 }));
 
 const MovieDetails = () => {
@@ -54,19 +63,34 @@ const MovieDetails = () => {
     title: "",
     backdrop_path: "",
     genres: [],
+    credits: { cast: [], crew: [] },
   });
+  const [cast, setCast] = useState([]);
+  const [crew, setCrew] = useState([]);
   const classes = useStyles(movieDetails);
   useEffect(() => {
     fetch(
       `${TMDB_API_URL}/movie/${id}${DEFAULT_QUERY}&append_to_response=credits`
     )
       .then((response) => response.json())
-      .then((result) => setMovieDetails(result));
+      .then((result) => {
+        setMovieDetails(result);
+        setCast(result.credits.cast);
+        setCrew(
+          result.credits.crew.filter(
+            (crewMember) =>
+              crewMember.job === "Director" ||
+              crewMember.job === "Writer" ||
+              crewMember.job === "Screenplay" ||
+              crewMember.job === "Executive Producer"
+          )
+        );
+      });
   }, [id]);
 
-  const getImageUrl = (imagePath) => {
+  const getImageUrl = (imagePath, size) => {
     if (imagePath) {
-      return `${TMDB_IMAGE_URL}/w300/${imagePath}`;
+      return `${TMDB_IMAGE_URL}/w${size}/${imagePath}`;
     } else {
       return placeholder;
     }
@@ -74,14 +98,14 @@ const MovieDetails = () => {
   console.log(movieDetails);
   return (
     <Container maxWidth="lg">
-      <div className={classes.hero}>
+      <Paper className={classes.hero}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4} lg={3}>
             <Card className={classes.card}>
               <CardMedia
                 style={{ borderRadius: 2 }}
                 className={classes.cardMedia}
-                image={getImageUrl(movieDetails.poster_path)}
+                image={getImageUrl(movieDetails.poster_path, 300)}
                 title={movieDetails.title}
               />
             </Card>
@@ -90,6 +114,11 @@ const MovieDetails = () => {
             <div className={classes.details}>
               <div className={classes.detailSection}>
                 <Typography variant="h4">{movieDetails.title}</Typography>
+                {movieDetails.tagline && (
+                  <Typography variant="caption" display="block" gutterBottom>
+                    <i>{movieDetails.tagline}</i>
+                  </Typography>
+                )}
                 <div style={{ display: "flex" }}>
                   <Typography variant="body1">
                     Relase Date: {movieDetails.release_date}
@@ -142,8 +171,56 @@ const MovieDetails = () => {
             </div>
           </Grid>
         </Grid>
-      </div>
-      ;
+      </Paper>
+
+      <Box component={Paper} p={2} marginY={4}>
+        <Box mb={2}>
+          <Typography variant="h5">Cast</Typography>
+        </Box>
+        <Grid container spacing={1}>
+          {cast.slice(0, 6).map((castMember) => (
+            <Grid item xs={6} md={3} lg={2} key={castMember.id}>
+              <Card className={classes.castCard}>
+                <CardMedia
+                  style={{ borderRadius: 2 }}
+                  className={classes.castCardMedia}
+                  image={getImageUrl(castMember.profile_path, 185)}
+                  title={castMember.name}
+                />
+                <CardContent style={{ paddingBottom: 16 }}>
+                  <Typography variant="body1">{castMember.name}</Typography>
+                  <Typography variant="caption">
+                    {castMember.character}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+      <Box component={Paper} p={2} marginY={4}>
+        <Box mb={2}>
+          <Typography variant="h5">Crew</Typography>
+        </Box>
+        <Grid container spacing={1}>
+          {crew.slice(0, 6).map((crewMember) => (
+            <Grid item xs={6} md={3} lg={2} key={crewMember.id}>
+              <Card className={classes.castCard}>
+                <CardMedia
+                  style={{ borderRadius: 2 }}
+                  className={classes.castCardMedia}
+                  image={getImageUrl(crewMember.profile_path, 185)}
+                  title={crewMember.name}
+                />
+                <CardContent style={{ paddingBottom: 16 }}>
+                  <Typography variant="body1">{crewMember.name}</Typography>
+                  <Typography variant="caption">{crewMember.job}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </Container>
   );
 };
