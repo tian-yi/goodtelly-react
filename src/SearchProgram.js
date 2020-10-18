@@ -1,37 +1,41 @@
 import React, { useState, useEffect } from "react";
 
+import propTypes from "prop-types";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 
 import { fetchData } from "./api";
-import { TMDB_IMAGE_URL, POPULAR_MOVIES_URL } from "./config";
+import { TMDB_IMAGE_URL } from "./config";
 import PopularList from "./PopularList";
 import Hero from "./Hero";
 
-const Movie = () => {
+const SearchProgram = ({ defaultUrl, searchUrl, title }) => {
   const [heroImage, setHeroImage] = useState("");
   const [search, setSearch] = useState("");
-  const [popularMovies, setPopularMovies] = useState([]);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchMovies = async () => {
-      const result = await fetchData(POPULAR_MOVIES_URL);
+      const result = await fetchData(defaultUrl);
       const movies = result.results;
-      setPopularMovies(movies);
-      const randomTopMovieImage =
+      setItems(movies);
+      const randomTopItemImage =
         movies[parseInt(Math.random() * Math.floor(10), 10)].backdrop_path;
 
-      setHeroImage(`${TMDB_IMAGE_URL}/w1280${randomTopMovieImage}`);
+      setHeroImage(`${TMDB_IMAGE_URL}/w1280${randomTopItemImage}`);
     };
 
     fetchMovies();
-  }, []);
+  }, [defaultUrl]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //search movies
+    const result = await fetchData(`${searchUrl}&query=${search}`);
+    const searchResults = result.results;
+    setItems(searchResults);
+    setSearch("");
   };
   return (
     <Container maxWidth="lg">
@@ -47,9 +51,10 @@ const Movie = () => {
             }}
           >
             <TextField
+              autoComplete="off"
               variant="outlined"
               id="search"
-              label="Search Movie"
+              label={`Search ${title}`}
               name="Search"
               autoFocus
               value={search}
@@ -59,10 +64,18 @@ const Movie = () => {
         </form>
       </Hero>
       <Box mt={2}>
-        <PopularList items={popularMovies} title="Popular Movies" />
+        <PopularList
+          items={items}
+          title={search === "" ? `${title}s` : `Search Results for ${search}`}
+        />
       </Box>
     </Container>
   );
 };
 
-export default Movie;
+SearchProgram.propTypes = {
+  defaultUrl: propTypes.string.isRequired,
+  searchUrl: propTypes.string.isRequired,
+  title: propTypes.string.isRequired,
+};
+export default SearchProgram;

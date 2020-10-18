@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 
+import placeholder from "./static/images/image-placeholder.png";
 import { TMDB_IMAGE_URL } from "./config";
 
 const useStyles = makeStyles({
@@ -18,13 +19,20 @@ const useStyles = makeStyles({
     height: "100%;",
   },
   cardMedia: {
+    height: 0,
     paddingTop: "56.25%", // 16:9
   },
 });
 
 const PopularList = ({ title, items }) => {
   const classes = useStyles();
-
+  const getImageUrl = (imagePath) => {
+    if (imagePath) {
+      return `${TMDB_IMAGE_URL}/w300/${imagePath}`;
+    } else {
+      return placeholder;
+    }
+  };
   return (
     <Box component={Paper} p={2} marginBottom={2}>
       <Box mb={2}>
@@ -40,8 +48,9 @@ const PopularList = ({ title, items }) => {
               to={`/movie/${item.id}`}
             >
               <CardMedia
+                style={{ borderRadius: 2 }}
                 className={classes.cardMedia}
-                image={`${TMDB_IMAGE_URL}/w300/${item.backdrop_path}`}
+                image={getImageUrl(item.backdrop_path)}
                 title={item.title}
               />
               <CardContent>
