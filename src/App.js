@@ -12,7 +12,6 @@ import {
 import TopNav from "./TopNav";
 import Home from "./Home";
 import MovieDetails from "./MovieDetails";
-
 import SearchProgram from "./SearchProgram";
 
 function App() {
