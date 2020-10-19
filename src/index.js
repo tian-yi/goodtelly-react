@@ -1,14 +1,29 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
 
-import App from "./App";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 import * as serviceWorker from "./serviceWorker";
+import App from "./App";
+import Signup from "./Signup";
+import Login from "./Login";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <CssBaseline />
+      <Switch>
+        <Route path="/signup">
+          <Signup />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/">
+          <App />
+        </Route>
+      </Switch>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

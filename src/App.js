@@ -1,7 +1,6 @@
 import React from "react";
 
-import { Switch, Route } from "react-router-dom";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import { Switch } from "react-router-dom";
 
 import {
   POPULAR_MOVIES_URL,
@@ -14,32 +13,33 @@ import Home from "./Home";
 import MovieDetails from "./MovieDetails";
 import SearchProgram from "./SearchProgram";
 
+import PrivateRoute from "./PrivateRoute";
+
 function App() {
   return (
     <div>
-      <CssBaseline />
       <TopNav />
       <Switch>
-        <Route exact path="/">
+        <PrivateRoute exact path="/">
           <Home />
-        </Route>
-        <Route path="/movie/:id">
+        </PrivateRoute>
+        <PrivateRoute path="/movie/:id">
           <MovieDetails />
-        </Route>
-        <Route path="/movie">
+        </PrivateRoute>
+        <PrivateRoute path="/movie">
           <SearchProgram
             defaultUrl={POPULAR_MOVIES_URL}
             searchUrl={SEARCH_MOVIE_URL}
             title="Movie"
           />
-        </Route>
-        <Route path="/tv">
+        </PrivateRoute>
+        <PrivateRoute path="/tv" auth={false}>
           <SearchProgram
             defaultUrl={POPULAR_TV_SHOWS_URL}
             searchUrl={SEARCH_TV_URL}
             title="TV Show"
           />
-        </Route>
+        </PrivateRoute>
       </Switch>
     </div>
   );
