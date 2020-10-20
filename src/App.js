@@ -14,6 +14,8 @@ import { ReactComponent as Logo } from "./static/images/goodtelly-logo.svg";
 import PopularList from "./PopularList";
 import MovieDetails from "./MovieDetails";
 import TVDetails from "./TVDetails";
+import Home from "./Home";
+import { POPULAR_MOVIE_URL, POPULAR_TV_URL } from "./config";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -41,20 +43,15 @@ function App() {
 
   useEffect(() => {
     // fetch movies
-    const popular_movie_url =
-      "https://api.themoviedb.org/3/movie/popular?api_key=b9e04ffd5a10a79d0459e43247be7805&language=en-US&include_adult=false";
-
-    fetch(popular_movie_url)
+    fetch(POPULAR_MOVIE_URL)
       .then((response) => response.json())
       .then((result) => {
         setPopularMovies(result.results);
       });
 
     // fetch TV shows
-    const popular_tv_url =
-      "https://api.themoviedb.org/3/tv/popular?api_key=b9e04ffd5a10a79d0459e43247be7805&language=en-US&include_adult=false";
 
-    fetch(popular_tv_url)
+    fetch(POPULAR_TV_URL)
       .then((response) => response.json())
       .then((result) => {
         setPopularTVShows(result.results);
@@ -82,17 +79,9 @@ function App() {
       <Container maxWidth="lg" className={classes.main}>
         <Switch>
           <Route exact path="/">
-            <Box mb={2}>
-              <PopularList items={popularMovies} listTitle="Popular Movies" />
-            </Box>
-
-            <Box mb={2}>
-              <PopularList
-                items={popularTVShows}
-                listTitle="Popular TV Shows"
-              />
-            </Box>
+            <Home />
           </Route>
+
           <Route path="/movie/:id">
             <MovieDetails />
           </Route>
