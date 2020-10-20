@@ -7,35 +7,27 @@ import FormControl from "@material-ui/core/FormControl";
 
 import { POPULAR_MOVIE_URL, TMDB_IMAGE_URL, SEARCH_MOVIE_URL } from "./config";
 import PopularList from "./PopularList";
+import Hero from "./Hero";
 
 const useStyles = makeStyles((theme) => ({
-  hero: (props) => ({
-    height: "320px",
-    borderRadius: theme.spacing(0.5),
-    padding: theme.spacing(4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    backgroundImage: `linear-gradient(to right, rgb(3, 7, 65, 02), rgb(0, 0, 0, 0.6) 70%), url("${props.image}")`,
-  }),
   form: {
     width: "100%",
   },
   formControl: {
     opacity: 0.9,
     width: "35%",
-    background: "white",
-    borderRadius: 8,
-    padding: 16,
+    background: theme.palette.common.white,
+    borderRadius: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 
-const Home = () => {
+const Movie = () => {
   const [popularMovies, setPopularMovies] = useState([]);
   const [heroImageURL, setHeroImageURL] = useState("");
   const [searchText, setSearchText] = useState("");
   const [title, setTitle] = useState("Popular Movies");
+
   useEffect(() => {
     // fetch movies
     fetch(POPULAR_MOVIE_URL)
@@ -49,7 +41,7 @@ const Home = () => {
       });
   }, []);
 
-  const classes = useStyles({ image: heroImageURL });
+  const classes = useStyles();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -62,7 +54,7 @@ const Home = () => {
   };
   return (
     <>
-      <div className={classes.hero}>
+      <Hero heroImageURL={heroImageURL}>
         <form
           noValidate
           autoComplete="off"
@@ -81,7 +73,7 @@ const Home = () => {
             />
           </FormControl>
         </form>
-      </div>
+      </Hero>
       <Box mb={2}>
         <PopularList items={popularMovies} listTitle={title} />
       </Box>
@@ -89,4 +81,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Movie;

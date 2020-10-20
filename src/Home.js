@@ -1,23 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import PopularList from "./PopularList";
-import { POPULAR_MOVIE_URL, POPULAR_TV_URL, TMDB_IMAGE_URL } from "./config";
 
-const useStyles = makeStyles((theme) => ({
-  hero: (props) => ({
-    height: "320px",
-    borderRadius: theme.spacing(0.5),
-    padding: theme.spacing(4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "center",
-    backgroundImage: `linear-gradient(to right, rgb(3, 7, 65, 02), rgb(0, 0, 0, 0.6) 70%), url("${props.image}")`,
-  }),
-}));
+import { POPULAR_MOVIE_URL, POPULAR_TV_URL, TMDB_IMAGE_URL } from "./config";
+import PopularList from "./PopularList";
+import Hero from "./Hero";
 
 const Home = () => {
   const [popularMovies, setPopularMovies] = useState([]);
@@ -45,18 +33,17 @@ const Home = () => {
       });
   }, []);
 
-  const classes = useStyles({ image: heroImageURL });
-
   return (
     <>
-      <div className={classes.hero}>
+      <Hero heroImageURL={heroImageURL}>
         <Typography variant="h2" style={{ color: "white", marginBottom: 8 }}>
           Welcome
         </Typography>
         <Typography variant="h5" style={{ color: "white" }}>
           Share your favourite movies and TV shows with family and friends.
         </Typography>
-      </div>
+      </Hero>
+
       <Box mb={2}>
         <PopularList items={popularMovies} listTitle="Popular Movies" />
       </Box>
