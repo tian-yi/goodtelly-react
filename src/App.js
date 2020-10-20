@@ -11,11 +11,12 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 
 import { ReactComponent as Logo } from "./static/images/goodtelly-logo.svg";
+import { POPULAR_TV_URL } from "./config";
 import PopularList from "./PopularList";
 import MovieDetails from "./MovieDetails";
 import TVDetails from "./TVDetails";
 import Home from "./Home";
-import { POPULAR_MOVIE_URL, POPULAR_TV_URL } from "./config";
+import Movie from "./Movie";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -38,17 +39,9 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
-  const [popularMovies, setPopularMovies] = useState([]);
   const [popularTVShows, setPopularTVShows] = useState([]);
 
   useEffect(() => {
-    // fetch movies
-    fetch(POPULAR_MOVIE_URL)
-      .then((response) => response.json())
-      .then((result) => {
-        setPopularMovies(result.results);
-      });
-
     // fetch TV shows
 
     fetch(POPULAR_TV_URL)
@@ -86,9 +79,7 @@ function App() {
             <MovieDetails />
           </Route>
           <Route path="/movie">
-            <Box mb={2}>
-              <PopularList items={popularMovies} listTitle="Popular Movies" />
-            </Box>
+            <Movie />
           </Route>
           <Route path="/tv/:id">
             <TVDetails />
