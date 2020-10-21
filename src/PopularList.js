@@ -19,40 +19,47 @@ const useStyles = makeStyles((theme) => ({
   },
   cardMedia: {
     paddingTop: "56.25%", // 16:9
+    borderRadius: 2,
   },
-  sectionTitle: { padding: theme.spacing(2) },
+
+  link: {
+    textDecoration: "none",
+  },
+  sectionTitle: { marginBottom: theme.spacing(2) },
 }));
 
 function PopularList({ items, listTitle }) {
   const classes = useStyles();
 
   return (
-    <Box p={4} component={Paper}>
+    <Box component={Paper} p={2} marginBottom={2}>
       <Typography variant="h5" className={classes.sectionTitle}>
         {listTitle}
       </Typography>
 
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         {items.map((item) => {
           const title = item.title ? item.title : item.name;
           return (
             <Grid item xs={12} md={4} lg={3} key={item.id}>
-              <Card
-                className={classes.card}
-                component={Link}
+              <Link
                 to={item.title ? `/movie/${item.id}` : `/tv/${item.id}`}
+                className={classes.link}
               >
-                <CardMedia
-                  className={classes.cardMedia}
-                  image={`${IMAGE_URL}${item.backdrop_path}`}
-                  title={title}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {title}
-                  </Typography>
-                </CardContent>
-              </Card>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image={`${IMAGE_URL}${item.backdrop_path}`}
+                    title={title}
+                  />
+                  <CardContent>
+                    <Typography variant="body1">{title}</Typography>
+                    <Typography variant="subtitle2">
+                      Rating: {item.vote_average}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Link>
             </Grid>
           );
         })}

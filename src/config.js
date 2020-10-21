@@ -5,3 +5,4 @@ export const DEFAULT_QUERY = `?api_key=${API_KEY}&language=en-US&include_adult=f
 export const POPULAR_MOVIE_URL = `${TMDB_API_URL}movie/popular${DEFAULT_QUERY}`;
 export const POPULAR_TV_URL = `${TMDB_API_URL}tv/popular${DEFAULT_QUERY}`;
 export const SEARCH_MOVIE_URL = `${TMDB_API_URL}search/movie${DEFAULT_QUERY}`;
+export const SEARCH_TV_URL = `${TMDB_API_URL}search/tv${DEFAULT_QUERY}`;
