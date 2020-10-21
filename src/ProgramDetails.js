@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -14,7 +15,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
-import { getMovieDetailsURL, TMDB_IMAGE_URL } from "./config";
+import { getProgramDetailsURL, TMDB_IMAGE_URL } from "./config";
 import Placeholder from "./static/images/image-placeholder.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -63,9 +64,9 @@ const Separator = () => {
     </Typography>
   );
 };
-const MovieDetails = () => {
+const ProgramDetails = ({ programType }) => {
   const { id } = useParams();
-  const [movieDetails, setMovieDetails] = useState({
+  const [programDetails, setprogramDetails] = useState({
     title: "",
     poster_path: "",
     backdrop_path: "",
@@ -84,11 +85,11 @@ const MovieDetails = () => {
   };
 
   useEffect(() => {
-    const movieDetailsURL = getMovieDetailsURL(id);
-    fetch(movieDetailsURL)
+    const programDetailsURL = getProgramDetailsURL(programType, id);
+    fetch(programDetailsURL)
       .then((response) => response.json())
       .then((result) => {
-        setMovieDetails(result);
+        setprogramDetails(result);
         setCast(result.credits.cast);
         setCrew(
           result.credits.crew.filter(
@@ -100,10 +101,10 @@ const MovieDetails = () => {
           )
         );
       });
-  }, [id]);
+  }, [id, programType]);
 
   const classes = useStyles({
-    image: getImageURL(movieDetails.backdrop_path, 1280),
+    image: getImageURL(programDetails.backdrop_path, 1280),
   });
 
   return (
@@ -114,28 +115,32 @@ const MovieDetails = () => {
             <Card className={classes.card}>
               <CardMedia
                 className={classes.cardMedia}
-                image={getImageURL(movieDetails.poster_path, 780)}
-                title={movieDetails.title}
+                image={getImageURL(programDetails.poster_path, 780)}
+                title={programDetails.title}
               />
             </Card>
           </Grid>
           <Grid item xs={12} md={8} lg={8}>
             <div className={classes.details}>
-              <Typography variant="h4">{movieDetails.title}</Typography>
-              {movieDetails.tagline ? (
+              <Typography variant="h4">
+                {programDetails.title
+                  ? programDetails.title
+                  : programDetails.name}
+              </Typography>
+              {programDetails.tagline ? (
                 <Typography variant="caption">
-                  <i>{movieDetails.tagline}</i>
+                  <i>{programDetails.tagline}</i>
                 </Typography>
               ) : null}
 
               <div style={{ display: "flex" }}>
                 <Typography variant="body1">
-                  Release date: {movieDetails.release_date}
+                  Release date: {programDetails.release_date}
                 </Typography>
                 <Separator />
                 <Typography variant="body1">
                   Genre:{" "}
-                  {movieDetails.genres.map((genre, index, arr) => (
+                  {programDetails.genres.map((genre, index, arr) => (
                     <span key={genre.id}>
                       {genre.name}
                       {index < arr.length - 1 ? ", " : ""}
@@ -145,18 +150,18 @@ const MovieDetails = () => {
               </div>
               <div style={{ display: "flex" }}>
                 <Typography variant="body1">
-                  Rating: {movieDetails.vote_average}
+                  Rating: {programDetails.vote_average}
                 </Typography>
                 <Separator />
                 <Typography variant="body1">
-                  Run time: {movieDetails.runtime} Mins
+                  Run time: {programDetails.runtime} Mins
                 </Typography>
               </div>
 
               <Box mt={4}>
                 <Typography variant="h6">Overview</Typography>
                 <Typography variant="body1">
-                  {movieDetails.overview}{" "}
+                  {programDetails.overview}{" "}
                 </Typography>
               </Box>
               <Box mt={4}>
@@ -227,4 +232,7 @@ const MovieDetails = () => {
   );
 };
 
-export default MovieDetails;
+ProgramDetails.propTypes = {
+  programType: PropTypes.string.isRequired,
+};
+export default ProgramDetails;
