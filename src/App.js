@@ -17,6 +17,8 @@ import TVDetails from "./TVDetails";
 import Home from "./Home";
 import TopNav from "./TopNav";
 import SearchProgram from "./SearchProgram";
+import Signin from "./Signin";
+import PrivateRoute from "./PrivateRoute";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -28,6 +30,7 @@ function App() {
   const classes = useStyles();
   const [popularTVShows, setPopularTVShows] = useState([]);
   const [popularMovies, setPopularMovies] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     // fetch TV shows
@@ -53,7 +56,9 @@ function App() {
           <Route exact path="/">
             <Home />
           </Route>
-
+          <Route exact path="/signin">
+            <Signin handleAuth={() => setIsAuthenticated(true)} />
+          </Route>
           <Route path="/movie/:id">
             <MovieDetails />
           </Route>
@@ -67,13 +72,13 @@ function App() {
           <Route path="/tv/:id">
             <TVDetails />
           </Route>
-          <Route path="/tv">
+          <PrivateRoute path="/tv" isAuthenticated={isAuthenticated}>
             <SearchProgram
               popularPrograms={popularTVShows}
               searchURL={SEARCH_TV_URL}
               title="TV Shows"
             />
-          </Route>
+          </PrivateRoute>
         </Switch>
       </Container>
     </div>
