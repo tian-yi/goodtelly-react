@@ -6,6 +6,7 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -13,7 +14,7 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
-import { getMovieDetailsURL } from "./config";
+import { getMovieDetailsURL, TMDB_IMAGE_URL } from "./config";
 import Placeholder from "./static/images/image-placeholder.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -46,13 +47,18 @@ const useStyles = makeStyles((theme) => ({
   actionIcon: {
     marginRight: theme.spacing(2),
   },
+
+  castCard: {
+    maxWidth: "185px",
+  },
+  castCardMedia: {
+    height: 277,
+  },
 }));
 
-const IMAGE_URL = "https://image.tmdb.org/t/p/w1280/";
-
-const Spacer = () => {
+const Separator = () => {
   return (
-    <Typography variant="body1" style={{ margin: "0px 4px" }}>
+    <Typography variant="body1" style={{ margin: "0px 8px" }}>
       |
     </Typography>
   );
@@ -66,14 +72,16 @@ const MovieDetails = () => {
     genres: [],
     credits: { cast: [], crew: [] },
   });
-  const getImageURL = (imagePath) => {
+  const [cast, setCast] = useState([]);
+  const [crew, setCrew] = useState([]);
+
+  const getImageURL = (imagePath, size) => {
     if (imagePath) {
-      return `${IMAGE_URL}${imagePath}`;
+      return `${TMDB_IMAGE_URL}w${size}/${imagePath}`;
     } else {
       return Placeholder;
     }
   };
-  const classes = useStyles({ image: getImageURL(movieDetails.backdrop_path) });
 
   useEffect(() => {
     const movieDetailsURL = getMovieDetailsURL(id);
@@ -81,9 +89,23 @@ const MovieDetails = () => {
       .then((response) => response.json())
       .then((result) => {
         setMovieDetails(result);
+        setCast(result.credits.cast);
+        setCrew(
+          result.credits.crew.filter(
+            (crewMember) =>
+              crewMember.job === "Director" ||
+              crewMember.job === "Writer" ||
+              crewMember.job === "Screenplay" ||
+              crewMember.job === "Executive Producer"
+          )
+        );
       });
   }, [id]);
-  console.log(movieDetails);
+
+  const classes = useStyles({
+    image: getImageURL(movieDetails.backdrop_path, 1280),
+  });
+
   return (
     <Container maxWidth="lg">
       <Paper className={classes.hero}>
@@ -92,7 +114,7 @@ const MovieDetails = () => {
             <Card className={classes.card}>
               <CardMedia
                 className={classes.cardMedia}
-                image={getImageURL(movieDetails.poster_path)}
+                image={getImageURL(movieDetails.poster_path, 780)}
                 title={movieDetails.title}
               />
             </Card>
@@ -110,8 +132,7 @@ const MovieDetails = () => {
                 <Typography variant="body1">
                   Release date: {movieDetails.release_date}
                 </Typography>
-
-                <Spacer />
+                <Separator />
                 <Typography variant="body1">
                   Genre:{" "}
                   {movieDetails.genres.map((genre, index, arr) => (
@@ -121,13 +142,14 @@ const MovieDetails = () => {
                     </span>
                   ))}
                 </Typography>
-                <Spacer />
+              </div>
+              <div style={{ display: "flex" }}>
                 <Typography variant="body1">
                   Rating: {movieDetails.vote_average}
                 </Typography>
-                <Spacer />
+                <Separator />
                 <Typography variant="body1">
-                  Run time: {movieDetails.runtime}
+                  Run time: {movieDetails.runtime} Mins
                 </Typography>
               </div>
 
@@ -152,6 +174,55 @@ const MovieDetails = () => {
           </Grid>
         </Grid>
       </Paper>
+
+      <Box component={Paper} p={2} marginY={4}>
+        <Box mb={2}>
+          <Typography variant="h5">Cast</Typography>
+        </Box>
+        <Grid container spacing={1}>
+          {cast.slice(0, 6).map((castMember) => (
+            <Grid item xs={6} md={3} lg={2} key={castMember.id}>
+              <Card className={classes.castCard}>
+                <CardMedia
+                  style={{ borderRadius: 2 }}
+                  className={classes.castCardMedia}
+                  image={getImageURL(castMember.profile_path, 185)}
+                  title={castMember.name}
+                />
+                <CardContent style={{ paddingBottom: 16 }}>
+                  <Typography variant="body1">{castMember.name}</Typography>
+                  <Typography variant="caption">
+                    {castMember.character}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+      <Box component={Paper} p={2} marginY={4}>
+        <Box mb={2}>
+          <Typography variant="h5">Crew</Typography>
+        </Box>
+        <Grid container spacing={1}>
+          {crew.slice(0, 6).map((crewMember) => (
+            <Grid item xs={6} md={3} lg={2} key={crewMember.id}>
+              <Card className={classes.castCard}>
+                <CardMedia
+                  style={{ borderRadius: 2 }}
+                  className={classes.castCardMedia}
+                  image={getImageURL(crewMember.profile_path, 185)}
+                  title={crewMember.name}
+                />
+                <CardContent style={{ paddingBottom: 16 }}>
+                  <Typography variant="body1">{crewMember.name}</Typography>
+                  <Typography variant="caption">{crewMember.job}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </Container>
   );
 };
