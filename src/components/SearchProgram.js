@@ -6,8 +6,8 @@ import Box from "@material-ui/core/Box";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 
-import { TMDB_IMAGE_URL } from "./config";
-import PopularList from "./PopularList";
+import { TMDB_IMAGE_URL } from "../config";
+import PopularList from "./ProgramList";
 import Hero from "./Hero";
 
 const useStyles = makeStyles((theme) => ({

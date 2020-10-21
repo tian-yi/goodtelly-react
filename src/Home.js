@@ -4,8 +4,8 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 
 import { POPULAR_MOVIE_URL, POPULAR_TV_URL, TMDB_IMAGE_URL } from "./config";
-import PopularList from "./PopularList";
-import Hero from "./Hero";
+import PopularList from "./components/ProgramList";
+import Hero from "./components/Hero";
 
 const Home = () => {
   const [popularMovies, setPopularMovies] = useState([]);

@@ -7,7 +7,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 
-import { ReactComponent as Logo } from "./static/images/goodtelly-logo.svg";
+import { ReactComponent as Logo } from "../static/images/goodtelly-logo.svg";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
