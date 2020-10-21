@@ -11,6 +11,8 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 
+import Placeholder from "./static/images/image-placeholder.png";
+
 const IMAGE_URL = "https://image.tmdb.org/t/p/w780/";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +33,13 @@ const useStyles = makeStyles((theme) => ({
 function PopularList({ items, listTitle }) {
   const classes = useStyles();
 
+  const getImageURL = (imagePath) => {
+    if (imagePath) {
+      return `${IMAGE_URL}${imagePath}`;
+    } else {
+      return Placeholder;
+    }
+  };
   return (
     <Box component={Paper} p={2} marginBottom={2}>
       <Typography variant="h5" className={classes.sectionTitle}>
@@ -49,7 +58,7 @@ function PopularList({ items, listTitle }) {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image={`${IMAGE_URL}${item.backdrop_path}`}
+                    image={getImageURL(item.backdrop_path)}
                     title={title}
                   />
                   <CardContent>
