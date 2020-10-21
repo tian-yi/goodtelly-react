@@ -65,7 +65,7 @@ const SearchProgram = ({ popularPrograms, searchURL, title }) => {
               label="Search"
               type="search"
               variant="outlined"
-              placeholder={`${title} name`}
+              placeholder={`${title} names`}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             />
