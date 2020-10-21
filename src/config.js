@@ -6,3 +6,8 @@ export const POPULAR_MOVIE_URL = `${TMDB_API_URL}movie/popular${DEFAULT_QUERY}`;
 export const POPULAR_TV_URL = `${TMDB_API_URL}tv/popular${DEFAULT_QUERY}`;
 export const SEARCH_MOVIE_URL = `${TMDB_API_URL}search/movie${DEFAULT_QUERY}`;
 export const SEARCH_TV_URL = `${TMDB_API_URL}search/tv${DEFAULT_QUERY}`;
+export const CREDITS_QUERY = `&append_to_response=credits`;
+
+export const getMovieDetailsURL = (id) => {
+  return `${TMDB_API_URL}movie/${id}${DEFAULT_QUERY}${CREDITS_QUERY}`;
+};
