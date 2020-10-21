@@ -6,11 +6,15 @@ import { CssBaseline } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import { POPULAR_TV_URL, SEARCH_TV_URL } from "./config";
+import {
+  POPULAR_TV_URL,
+  SEARCH_TV_URL,
+  POPULAR_MOVIE_URL,
+  SEARCH_MOVIE_URL,
+} from "./config";
 import MovieDetails from "./MovieDetails";
 import TVDetails from "./TVDetails";
 import Home from "./Home";
-import Movie from "./Movie";
 import TopNav from "./TopNav";
 import SearchProgram from "./SearchProgram";
 
@@ -23,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
   const [popularTVShows, setPopularTVShows] = useState([]);
+  const [popularMovies, setPopularMovies] = useState([]);
 
   useEffect(() => {
     // fetch TV shows
@@ -30,6 +35,12 @@ function App() {
       .then((response) => response.json())
       .then((result) => {
         setPopularTVShows(result.results);
+      });
+
+    fetch(POPULAR_MOVIE_URL)
+      .then((response) => response.json())
+      .then((result) => {
+        setPopularMovies(result.results);
       });
   }, []);
 
@@ -47,7 +58,11 @@ function App() {
             <MovieDetails />
           </Route>
           <Route path="/movie">
-            <Movie />
+            <SearchProgram
+              popularPrograms={popularMovies}
+              searchURL={SEARCH_MOVIE_URL}
+              title="Movies"
+            />
           </Route>
           <Route path="/tv/:id">
             <TVDetails />
