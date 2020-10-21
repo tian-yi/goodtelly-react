@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import Button from "@material-ui/core/Button";
 
@@ -48,24 +48,41 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
   const classes = useStyles();
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignup = (e) => {
     e.preventDefault();
-    fetch("http://localhost:8000/users/", {
+    fetch("http://api.goodtelly.com/users/", {
       method: "POST",
       mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: "tianyi12",
-        password: "tianyi12",
-        email: "tianyi12@example.com",
+        username: userName,
+        password: password,
+        email: email,
       }),
     })
       .then((response) => response.json())
       .then((result) => {
-        debugger;
+        fetch("http://api.goodtelly.com/api/token/", {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: userName,
+            password: password,
+          }),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            debugger;
+          });
       });
   };
   return (
@@ -86,6 +103,8 @@ export default function SignUp() {
                 id="username"
                 label="Username"
                 autoFocus
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
               />
             </Grid>
 
@@ -98,6 +117,8 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -110,6 +131,8 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
           </Grid>

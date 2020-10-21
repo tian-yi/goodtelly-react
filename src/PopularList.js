@@ -53,9 +53,7 @@ const PopularList = ({ title, items }) => {
                 title={item.title}
               />
               <CardContent>
-                <Typography variant="body1">
-                  {item.title ? item.title : item.original_name}
-                </Typography>
+                <Typography variant="body1">{item.title}</Typography>
                 <Typography variant="subtitle2">
                   Rating: {item.vote_average}
                 </Typography>
