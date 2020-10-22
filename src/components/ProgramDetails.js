@@ -15,8 +15,16 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
-import { getProgramDetailsURL, TMDB_IMAGE_URL } from "./config";
-import Placeholder from "./static/images/image-placeholder.png";
+import { getProgramDetailsURL, TMDB_IMAGE_URL } from "../config";
+import Placeholder from "../static/images/image-placeholder.png";
+
+export const getImageURL = (imagePath, size) => {
+  if (imagePath) {
+    return `${TMDB_IMAGE_URL}w${size}/${imagePath}`;
+  } else {
+    return Placeholder;
+  }
+};
 
 const useStyles = makeStyles((theme) => ({
   hero: (props) => ({
@@ -75,14 +83,6 @@ const ProgramDetails = ({ programType }) => {
   });
   const [cast, setCast] = useState([]);
   const [crew, setCrew] = useState([]);
-
-  const getImageURL = (imagePath, size) => {
-    if (imagePath) {
-      return `${TMDB_IMAGE_URL}w${size}/${imagePath}`;
-    } else {
-      return Placeholder;
-    }
-  };
 
   useEffect(() => {
     const programDetailsURL = getProgramDetailsURL(programType, id);

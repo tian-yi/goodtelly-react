@@ -13,10 +13,10 @@ import {
   SEARCH_MOVIE_URL,
 } from "./config";
 
-import ProgramDetails from "./ProgramDetails";
+import ProgramDetails from "./components/ProgramDetails";
 import Home from "./Home";
-import TopNav from "./TopNav";
-import SearchProgram from "./SearchProgram";
+import TopNav from "./components/TopNav";
+import SearchProgram from "./components/SearchProgram";
 import Signin from "./Signin";
 import PrivateRoute from "./PrivateRoute";
 
