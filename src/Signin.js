@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { useHistory, useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
+import { useHistory, useLocation, Link } from "react-router-dom";
+
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -12,18 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="/">
-        Good Telly Entertainment
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { signin } from "./api";
+import { Copyright } from "./Signup";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -52,8 +43,14 @@ export default function SignIn({ handleAuth }) {
 
   let { from } = location.state || { from: { pathname: "/" } };
 
-  const signin = () => {
-    handleAuth();
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignin = async (e) => {
+    e.preventDefault();
+
+    const result = await signin({ username: userName, password });
+    handleAuth(result.access);
     history.replace(from);
   };
 
@@ -66,17 +63,19 @@ export default function SignIn({ handleAuth }) {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleSignin}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="off"
             autoFocus
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
           />
           <TextField
             variant="outlined"
@@ -88,6 +87,8 @@ export default function SignIn({ handleAuth }) {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <Button
@@ -96,14 +97,13 @@ export default function SignIn({ handleAuth }) {
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={signin}
           >
             Sign In
           </Button>
           <Grid container>
             <Grid item xs></Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link to="/signup" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
@@ -116,3 +116,7 @@ export default function SignIn({ handleAuth }) {
     </Container>
   );
 }
+
+SignIn.propTypes = {
+  handleAuth: PropTypes.func.isRequired,
+};

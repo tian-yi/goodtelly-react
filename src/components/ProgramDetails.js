@@ -11,6 +11,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import IconButton from "@material-ui/core/IconButton";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
@@ -165,15 +166,24 @@ const ProgramDetails = ({ programType }) => {
                 </Typography>
               </Box>
               <Box mt={4}>
-                <FavoriteIcon fontSize="large" className={classes.actionIcon} />
-                <PlaylistAddIcon
-                  fontSize="large"
-                  className={classes.actionIcon}
-                />
-                <ThumbDownIcon
-                  fontSize="large"
-                  className={classes.actionIcon}
-                />
+                <IconButton color="primary">
+                  <FavoriteIcon
+                    fontSize="large"
+                    className={classes.actionIcon}
+                  />
+                </IconButton>
+                <IconButton color="primary">
+                  <PlaylistAddIcon
+                    fontSize="large"
+                    className={classes.actionIcon}
+                  />
+                </IconButton>
+                <IconButton color="primary">
+                  <ThumbDownIcon
+                    fontSize="large"
+                    className={classes.actionIcon}
+                  />
+                </IconButton>
               </Box>
             </div>
           </Grid>
