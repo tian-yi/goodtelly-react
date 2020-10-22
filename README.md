@@ -1,4 +1,18 @@
+## Good Telly
+
+A web application to search movies, TV shows built using React.
+
+## Feature list
+
+* See most popular Movies and TV Shows
+* Search Movies and TV Shows
+* Register as user on the site
+* Registered user can add Movies or TV Shows to their Favourite, Watch list or Meh list.
+
+## Project setup
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+It uses Typescript, Redux, React Router and Material UI.
 
 ## Available Scripts
 
