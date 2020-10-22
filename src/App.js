@@ -12,8 +12,8 @@ import {
   POPULAR_MOVIE_URL,
   SEARCH_MOVIE_URL,
 } from "./config";
-import MovieDetails from "./MovieDetails";
-import TVDetails from "./TVDetails";
+
+import ProgramDetails from "./ProgramDetails";
 import Home from "./Home";
 import TopNav from "./TopNav";
 import SearchProgram from "./SearchProgram";
@@ -60,7 +60,7 @@ function App() {
             <Signin handleAuth={() => setIsAuthenticated(true)} />
           </Route>
           <Route path="/movie/:id">
-            <MovieDetails />
+            <ProgramDetails programType="movie" />
           </Route>
           <Route path="/movie">
             <SearchProgram
@@ -70,15 +70,15 @@ function App() {
             />
           </Route>
           <Route path="/tv/:id">
-            <TVDetails />
+            <ProgramDetails programType="tv" />
           </Route>
-          <PrivateRoute path="/tv" isAuthenticated={isAuthenticated}>
+          <Route path="/tv" isAuthenticated={isAuthenticated}>
             <SearchProgram
               popularPrograms={popularTVShows}
               searchURL={SEARCH_TV_URL}
               title="TV Shows"
             />
-          </PrivateRoute>
+          </Route>
         </Switch>
       </Container>
     </div>
