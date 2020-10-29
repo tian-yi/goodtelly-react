@@ -75,6 +75,7 @@ const Separator = () => {
 };
 const ProgramDetails = ({ programType }) => {
   const { id } = useParams();
+
   const [programDetails, setprogramDetails] = useState({
     title: "",
     poster_path: "",

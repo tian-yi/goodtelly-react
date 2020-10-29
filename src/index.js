@@ -1,8 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
+
+import ReactGA from "react-ga";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+
+ReactGA.initialize("G-BN8S7YVDF3");
 
 ReactDOM.render(
   <React.StrictMode>

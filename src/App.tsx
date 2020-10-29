@@ -51,7 +51,7 @@ function App() {
       });
   }, []);
 
-  const handleAuth = (token) => {
+  const handleAuth = (token: string) => {
     setIsAuthenticated(true);
     setAuthToken(token);
     // Should use js-cookies instead. local storage is not secure
