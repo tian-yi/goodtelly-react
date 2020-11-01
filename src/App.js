@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { Switch, Route } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 import { CssBaseline } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -51,11 +53,20 @@ function App() {
       });
   }, []);
 
-  const handleAuth = (token: string) => {
+  useEffect(() => {
+    const token = Cookies.get("authToken");
+    if (token) {
+      setIsAuthenticated(true);
+      setAuthToken(token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+  }, []);
+
+  const handleAuth = (token) => {
     setIsAuthenticated(true);
     setAuthToken(token);
-    // Should use js-cookies instead. local storage is not secure
-    localStorage.setItem("token", token);
+    Cookies.set("authToken", token, { expires: 7 });
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
   return (
     <div>
@@ -93,7 +104,7 @@ function App() {
             />
           </Route>
           <PrivateRoute path="/list" isAuthenticated={isAuthenticated}>
-            <MyList authToken={authToken} />
+            <MyList />
           </PrivateRoute>
         </Switch>
       </Container>

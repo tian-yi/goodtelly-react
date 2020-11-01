@@ -48,9 +48,8 @@ export default function SignIn({ handleAuth }) {
 
   const handleSignin = async (e) => {
     e.preventDefault();
-
     const result = await signin({ username: userName, password });
-    handleAuth(result.access);
+    handleAuth(result.data.access);
     history.replace(from);
   };
 
