@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
+import { Typography } from "@material-ui/core";
 
 const MyList = () => {
   const [favouriteList, setFavouriteList] = useState([]);
@@ -18,7 +19,28 @@ const MyList = () => {
       setMehList(res.data.programs);
     });
   }, []);
-  return <div>Lists</div>;
+  return (
+    <>
+      <div>
+        <Typography variant="h2">Favourite list</Typography>
+        {favouriteList.map((item) => (
+          <li key={item.program_id}>{item.program_id}</li>
+        ))}
+      </div>
+      <div>
+        <Typography variant="h2">Watch later</Typography>
+        {wathLaterList.map((item) => (
+          <li key={item.program_id}>{item.program_id}</li>
+        ))}
+      </div>
+      <div>
+        <Typography variant="h2">Meh list</Typography>
+        {mehList.map((item) => (
+          <li key={item.program_id}>{item.program_id}</li>
+        ))}
+      </div>
+    </>
+  );
 };
 
 export default MyList;

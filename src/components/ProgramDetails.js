@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import axios from "axios";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
@@ -109,6 +110,16 @@ const ProgramDetails = ({ programType }) => {
     image: getImageURL(programDetails.backdrop_path, 1280),
   });
 
+  const updateList = (listName) => {
+    axios
+      .post(`https://api.goodtelly.com/list/${listName}/`, {
+        program_id: id,
+        program_type: programType,
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
   return (
     <Container maxWidth="lg">
       <Paper className={classes.hero}>
@@ -167,19 +178,25 @@ const ProgramDetails = ({ programType }) => {
                 </Typography>
               </Box>
               <Box mt={4}>
-                <IconButton color="primary">
+                <IconButton
+                  color="primary"
+                  onClick={() => updateList("favourite")}
+                >
                   <FavoriteIcon
                     fontSize="large"
                     className={classes.actionIcon}
                   />
                 </IconButton>
-                <IconButton color="primary">
+                <IconButton
+                  color="primary"
+                  onClick={() => updateList("watch-later")}
+                >
                   <PlaylistAddIcon
                     fontSize="large"
                     className={classes.actionIcon}
                   />
                 </IconButton>
-                <IconButton color="primary">
+                <IconButton color="primary" onClick={() => updateList("meh")}>
                   <ThumbDownIcon
                     fontSize="large"
                     className={classes.actionIcon}
