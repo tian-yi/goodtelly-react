@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
+import ReactGA from "react-ga";
 
 import { CssBaseline } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -61,6 +62,10 @@ function App() {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
   }, []);
+
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  });
 
   const handleAuth = (token) => {
     setIsAuthenticated(true);

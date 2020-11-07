@@ -7,7 +7,7 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 ReactGA.initialize("G-BN8S7YVDF3");
-ReactGA.pageview(window.location.pathname + window.location.search);
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
