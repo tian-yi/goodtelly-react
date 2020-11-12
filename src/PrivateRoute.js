@@ -8,24 +8,8 @@ import { Route, Redirect, useLocation } from "react-router-dom";
 
 export default function PrivateRoute({ isAuthenticated, children, ...rest }) {
   const location = useLocation();
+  console.log(isAuthenticated);
 
-  // return (
-  //   <Route
-  //     {...rest}
-  //     render={({ location }) =>
-  //       isAuthenticated ? (
-  //         children
-  //       ) : (
-  //         <Redirect
-  //           to={{
-  //             pathname: "/signin",
-  //             state: { from: location },
-  //           }}
-  //         />
-  //       )
-  //     }
-  //   />
-  // );
   if (isAuthenticated) {
     return <Route {...rest}>{children}</Route>;
   }

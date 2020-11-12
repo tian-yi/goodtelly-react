@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+import PropTypes from "prop-types";
 import { Switch, Route } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -32,12 +33,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App() {
+function App({ authToken }) {
   const classes = useStyles();
   const [popularTVShows, setPopularTVShows] = useState([]);
   const [popularMovies, setPopularMovies] = useState([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authToken, setAuthToken] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    authToken ? true : false
+  );
 
   useEffect(() => {
     // fetch TV shows
@@ -55,13 +57,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const token = Cookies.get("authToken");
-    if (token) {
+    if (authToken) {
       setIsAuthenticated(true);
-      setAuthToken(token);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
-  }, []);
+  }, [authToken]);
 
   useEffect(() => {
     ReactGA.pageview(window.location.pathname + window.location.search);
@@ -69,7 +68,6 @@ function App() {
 
   const handleAuth = (token) => {
     setIsAuthenticated(true);
-    setAuthToken(token);
     Cookies.set("authToken", token, { expires: 7 });
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
@@ -117,4 +115,7 @@ function App() {
   );
 }
 
+App.propTypes = {
+  authToken: PropTypes.string,
+};
 export default App;

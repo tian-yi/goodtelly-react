@@ -1,5 +1,8 @@
 import React from "react";
 
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useHistory } from "react-router";
 import IconButton from "@material-ui/core/IconButton";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -7,6 +10,7 @@ import Menu from "@material-ui/core/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
 export default function UserMenu() {
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -19,7 +23,12 @@ export default function UserMenu() {
     setAnchorEl(null);
   };
 
-  const logout = () => {};
+  const logout = () => {
+    Cookies.remove("authToken");
+    axios.defaults.headers.common["Authorization"] = "";
+    history.push("signin");
+  };
+
   const menuId = "primary-search-account-menu";
 
   return (
